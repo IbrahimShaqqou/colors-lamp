@@ -1,0 +1,11 @@
+.env
+.env.*
+*.conf
+*.key
+*.log
+*.pem
+.DS_Store
+.idea/
+.vscode/
+vendor/
+

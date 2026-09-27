@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>COLORS</title>
+</head>
+<body>
+  <main>
+    <h1>COLORS</h1>
+    <p>Save and search your personal color collection.</p>
+
+    <section id="login-view">
+      <h2>Sign in</h2>
+      <form id="login-form">
+        <label for="login">Username</label>
+        <input id="login" name="login" autocomplete="username" required>
+
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" autocomplete="current-password" required>
+
+        <button type="submit">Log in</button>
+      </form>
+      <p id="login-message" role="status" aria-live="polite"></p>
+    </section>
+
+    <section id="colors-view" hidden>
+      <p>Signed in as <strong id="display-name"></strong></p>
+      <button id="logout-button" type="button">Log out</button>
+
+      <form id="add-form">
+        <h2>Add a color</h2>
+        <label for="color">Color name</label>
+        <input id="color" name="color" placeholder="e.g. Red" maxlength="50" required>
+        <button type="submit">Add color</button>
+        <p id="add-message" role="status" aria-live="polite"></p>
+      </form>
+
+      <form id="search-form">
+        <h2>Search colors</h2>
+        <label for="search">Name contains</label>
+        <input id="search" name="search" placeholder="Leave blank to show all" maxlength="50">
+        <button type="submit">Search</button>
+      </form>
+
+      <h2>Results</h2>
+      <p id="search-message" role="status" aria-live="polite"></p>
+      <ul id="results"></ul>
+    </section>
+  </main>
+
+  <script src="/js/app.js"></script>
+</body>
+</html>
+
