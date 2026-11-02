@@ -1,0 +1,71 @@
+@startuml
+!pragma layout smetana
+title COLORS Class Diagram
+
+skinparam monochrome true
+skinparam shadowing false
+skinparam backgroundColor white
+skinparam classAttributeIconSize 0
+skinparam dpi 160
+
+class BrowserApp <<JavaScript>> {
+  - currentUser : Object
+  + login(login : String, password : String)
+  + addColor(color : String)
+  + searchColors(search : String)
+  + logout()
+  - post(endpoint : String, body : Object) : JSON
+}
+
+class LoginEndpoint <<PHP endpoint>> {
+  + post(login : String, password : String) : JSON
+}
+
+class AddColorEndpoint <<PHP endpoint>> {
+  + post(userId : Integer, color : String) : JSON
+}
+
+class SearchColorsEndpoint <<PHP endpoint>> {
+  + post(userId : Integer, search : String) : JSON
+}
+
+class Users <<MySQL table>> {
+  + ID : Integer
+  + FirstName : String
+  + LastName : String
+  + Login : String
+  + Password : String
+}
+
+class Colors <<MySQL table>> {
+  + ID : Integer
+  + Name : String
+  + UserID : Integer
+}
+
+class Contacts <<MySQL table>> {
+  + ID : Integer
+  + FirstName : String
+  + LastName : String
+  + Phone : String
+  + Email : String
+  + UserID : Integer
+}
+
+BrowserApp ..> LoginEndpoint : JSON POST
+BrowserApp ..> AddColorEndpoint : JSON POST
+BrowserApp ..> SearchColorsEndpoint : JSON POST
+
+LoginEndpoint ..> Users : reads
+AddColorEndpoint ..> Colors : creates
+SearchColorsEndpoint ..> Colors : reads
+
+Users "1" *-- "0..*" Colors : owns
+Users "1" *-- "0..*" Contacts : owns
+
+note right of Contacts
+  Present in the database schema.
+  Not used by the current COLORS UI or API.
+end note
+
+@enduml
