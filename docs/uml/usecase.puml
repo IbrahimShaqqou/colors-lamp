@@ -22,7 +22,8 @@ User --> SearchColors
 User --> Logout
 
 legend bottom
-  Add, search, and logout require a successful login.
+  In the browser UI, add, search, and logout are available
+  after a successful login.
 endlegend
 
 @enduml

@@ -48,7 +48,7 @@ repeat
     :Enter a search term;
     :POST JSON to SearchColors.php;
     |PHP API|
-    :Validate user ID and search term;
+    :Validate user ID and search length;
     |MySQL|
     :Query Colors by user ID and name;
     |PHP API|
