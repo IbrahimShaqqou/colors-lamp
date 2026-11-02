@@ -1,0 +1,65 @@
+@startuml
+!pragma layout smetana
+title COLORS Activity Diagram
+
+skinparam monochrome true
+skinparam shadowing false
+skinparam backgroundColor white
+skinparam dpi 160
+
+|Browser|
+start
+
+repeat
+  :Enter username and password;
+  :POST JSON to Login.php;
+  |PHP API|
+  :Validate input and hash password;
+  |MySQL|
+  :Find matching Users row;
+  |PHP API|
+  if (User found?) then (No)
+    :Return login failure;
+    |Browser|
+    :Show invalid login message;
+  else (Yes)
+    |PHP API|
+    :Return user ID and name;
+    |Browser|
+  endif
+repeat while (Login failed?) is (Yes) not (No)
+
+:Show color workspace;
+
+repeat
+  :Choose an action;
+  if (Add a color?) then (Yes)
+    :Enter a color name;
+    :POST JSON to AddColor.php;
+    |PHP API|
+    :Validate user ID and color;
+    |MySQL|
+    :Insert a Colors row;
+    |PHP API|
+    :Return success;
+    |Browser|
+    :Show add confirmation;
+  elseif (Search colors?) then (Yes)
+    :Enter a search term;
+    :POST JSON to SearchColors.php;
+    |PHP API|
+    :Validate user ID and search term;
+    |MySQL|
+    :Query Colors by user ID and name;
+    |PHP API|
+    :Return matching color names;
+    |Browser|
+    :Display search results;
+  else (Log out)
+    :Clear current user and form state;
+    :Show login view;
+  endif
+repeat while (User is logged in?) is (Yes) not (No)
+
+stop
+@enduml
