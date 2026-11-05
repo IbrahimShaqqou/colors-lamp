@@ -1,0 +1,28 @@
+@startuml
+!pragma layout smetana
+title COLORS Use Case Diagram
+
+left to right direction
+skinparam monochrome true
+skinparam shadowing false
+skinparam backgroundColor white
+
+actor User
+
+rectangle "COLORS Web Application" {
+  usecase "Log in" as Login
+  usecase "Add a color" as AddColor
+  usecase "Search saved colors" as SearchColors
+  usecase "Log out" as Logout
+}
+
+User --> Login
+User --> AddColor
+User --> SearchColors
+User --> Logout
+
+legend bottom
+  Add, search, and logout require a successful login.
+endlegend
+
+@enduml
