@@ -14,7 +14,7 @@ class BrowserApp <<JavaScript>> {
   + addColor(color : String)
   + searchColors(search : String)
   + logout()
-  - post(endpoint : String, body : Object) : JSON
+  - post(endpoint : String, body : Object) : Promise<JSON>
 }
 
 class LoginEndpoint <<PHP endpoint>> {
@@ -66,6 +66,11 @@ Users "1" *-- "0..*" Contacts : owns
 note right of Contacts
   Present in the database schema.
   Not used by the current COLORS UI or API.
+end note
+
+note bottom of BrowserApp
+  BrowserApp and the endpoint classes are logical UML
+  representations of procedural JavaScript and PHP modules.
 end note
 
 @enduml
