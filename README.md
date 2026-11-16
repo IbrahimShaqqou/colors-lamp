@@ -73,3 +73,7 @@ export COLORS_TEST_PASSWORD='your-password'
 
 I used AI to help organize the repository, review the code, write setup documentation, and troubleshoot deployment. I reviewed and tested the final result.
 
+
+## License
+
+MIT, see LICENSE.md.
