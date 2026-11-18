@@ -73,3 +73,32 @@ export COLORS_TEST_PASSWORD='your-password'
 
 I used AI to help organize the repository, review the code, write setup documentation, and troubleshoot deployment. I reviewed and tested the final result.
 
+
+## Automated checks (Assignment 5)
+
+Branch: `assignment-5-tests` (extends the Assignment 4 linting branch).
+
+GitHub Actions runs linting and Jest tests on every push and pull request.
+The test job starts PHP 8.3 and a disposable MySQL 8 database; it never uses
+or modifies the live site's database.
+
+```bash
+npm ci
+npm run lint
+npm run test:unit
+```
+
+- `tests/frontend.test.cjs` loads the actual page and application script in
+  jsdom. It checks login feedback, trimmed color submissions, failed-add
+  feedback, safe rendering of search results, and logout behavior. HTTP
+  responses are mocked for these unit tests.
+- `tests/api.test.cjs` makes real HTTP requests to PHP backed by MySQL. It
+  checks valid/invalid login, add/search persistence, separation by user ID,
+  and JSON validation errors. No API or database responses are mocked.
+
+For local integration tests, create a **disposable** database with
+`database/schema.sql`, seed the two test users shown in
+`.github/workflows/lint.yml`, and set the `COLORS_DB_*` environment variables
+for that database. Start `php -S 127.0.0.1:8080 -t api` in a separate terminal,
+then run `npm test` (both suites) or `npm run test:integration`.
+`COLORS_TEST_API_URL` can override the test server URL.

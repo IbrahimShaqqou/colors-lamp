@@ -1,4 +1,4 @@
-name: Lint
+name: Lint and tests
 
 on:
   push:
@@ -25,3 +25,57 @@ jobs:
 
       - name: Lint HTML, CSS, and JavaScript
         run: npm run lint
+
+  test:
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: ci-root-password
+          MYSQL_DATABASE: COP4331
+          MYSQL_USER: colors_ci
+          MYSQL_PASSWORD: ci-password
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h localhost"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+    env:
+      COLORS_DB_HOST: 127.0.0.1
+      COLORS_DB_USER: colors_ci
+      COLORS_DB_PASSWORD: ci-password
+      COLORS_DB_NAME: COP4331
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mysqli
+      - run: npm ci
+      - name: Initialize disposable test database
+        env:
+          MYSQL_PWD: ci-password
+        run: |
+          mysql -h 127.0.0.1 -u colors_ci < database/schema.sql
+          mysql -h 127.0.0.1 -u colors_ci COP4331 <<'SQL'
+          INSERT INTO Users (ID, FirstName, LastName, Login, Password) VALUES
+            (1, 'CI', 'User', 'ci-user', MD5('ci-password')),
+            (2, 'Other', 'User', 'other-user', MD5('other-password'));
+          SQL
+      - name: Run unit and integration tests
+        run: |
+          php -S 127.0.0.1:8080 -t api > /tmp/colors-api.log 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid"; cat /tmp/colors-api.log' EXIT
+          for attempt in {1..30}; do
+            if curl --silent http://127.0.0.1:8080/Login.php > /dev/null; then break; fi
+            sleep 1
+          done
+          npm test

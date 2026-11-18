@@ -6,12 +6,17 @@
     "lint": "npm run lint:html && npm run lint:css && npm run lint:js",
     "lint:html": "htmlhint \"public/**/*.html\"",
     "lint:css": "stylelint \"public/**/*.css\" --allow-empty-input",
-    "lint:js": "eslint \"public/**/*.js\""
+    "lint:js": "eslint \"public/**/*.js\"",
+    "test": "jest --runInBand",
+    "test:unit": "jest --selectProjects frontend --runInBand",
+    "test:integration": "jest --selectProjects integration --runInBand"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",
     "eslint": "10.14.0",
     "htmlhint": "1.9.2",
+    "jest": "^30.5.2",
+    "jest-environment-jsdom": "^30.5.2",
     "stylelint": "18.0.0",
     "stylelint-config-standard": "41.0.0"
   }

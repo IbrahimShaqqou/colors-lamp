@@ -33,8 +33,8 @@ loginForm.addEventListener('submit', async (event) => {
   showMessage(loginMessage, 'Signing in...');
   try {
     const data = await post('Login.php', {
-      login: loginForm.login.value,
-      password: loginForm.password.value,
+      login: loginForm.elements.namedItem('login').value,
+      password: loginForm.elements.namedItem('password').value,
     });
     if (!data.id) {
       showMessage(loginMessage, 'Invalid username or password.');
@@ -54,7 +54,7 @@ loginForm.addEventListener('submit', async (event) => {
 addForm.addEventListener('submit', async (event) => {
   event.preventDefault();
   if (!currentUser) return;
-  const color = addForm.color.value.trim();
+  const color = addForm.elements.namedItem('color').value.trim();
   showMessage(addMessage, 'Adding...');
   try {
     const data = await post('AddColor.php', { userId: currentUser.id, color });
@@ -74,7 +74,7 @@ searchForm.addEventListener('submit', async (event) => {
   try {
     const data = await post('SearchColors.php', {
       userId: currentUser.id,
-      search: searchForm.search.value.trim(),
+      search: searchForm.elements.namedItem('search').value.trim(),
     });
     for (const color of data.results) {
       const item = document.createElement('li');
